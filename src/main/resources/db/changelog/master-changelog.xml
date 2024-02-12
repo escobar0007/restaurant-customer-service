@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.25.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1" author="escobar">
+        <createTable tableName="customers">
+            <column name="id" type="bigserial"/>
+            <column name="provider_register_client_id" type="varchar"/>
+            <column name="first_name" type="varchar"/>
+            <column name="last_name" type="varchar"/>
+            <column name="username" type="varchar"/>
+            <column name="email" type="varchar"/>
+            <column name="phone_number" type="varchar"/>
+            <column name="password" type="varchar"/>
+            <column name="card_number" type="varchar"/>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

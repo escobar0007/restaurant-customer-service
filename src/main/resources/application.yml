@@ -1,0 +1,63 @@
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 683366391347-tdkke1s96jp38ofsetor74mrrb7kj6tc.apps.googleusercontent.com
+            client-secret: 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
+          github:
+            client-id: e3b1bc1d2571b33e6958
+            client-secret: ab250a70f47b918a329bcb165266e51b432c5b64
+            scope:
+              - user:email
+
+  mail:
+    host: sandbox.smtp.mailtrap.io
+    port: 587
+    username: 9d0e9bfcb08cbb
+    password: 46e287872d46e1
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: true
+          auth: true
+
+  liquibase:
+    enabled: true
+    change-log: classpath:/db/changelog/master-changelog.xml
+
+  application:
+    name: res-customer-service
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/restaurant_customer_service
+    username: postgres
+    password: adgjmp123
+    driver-class-name: org.postgresql.Driver
+
+server:
+  port: 9090
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+
+
+
+jwt:
+  token:
+    secret:
+      key: 0c967574dc31c2fdd17590a6ff0ef200a30d307cc29d6f8639209edcda790916
+      expiry: 31560000000
+
+frontend:
+  url: http://localhost:9090/api/v1/auth/verify?token=
+
