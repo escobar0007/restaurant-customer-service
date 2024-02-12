@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import uz.pdp.restaurantcustomerservice.security.oauth.enums.AuthType;
 
 @Component
-public class OAuth2GooglePrinciple implements OAuth2UserPrinciple{
+public class OAuth2GooglePrinciple{
 
     private final OAuth2User oAuth2User;
 
@@ -13,17 +13,14 @@ public class OAuth2GooglePrinciple implements OAuth2UserPrinciple{
         this.oAuth2User = oAuth2User;
     }
 
-    @Override
     public String getProviderClientRegisterId() {
         return AuthType.GOOGLE.getValue();
     }
 
-    @Override
     public String getUsername() {
         return oAuth2User.getAttribute("full_name");
     }
 
-    @Override
     public String getEmail() {
         return oAuth2User.getAttribute("email");
     }

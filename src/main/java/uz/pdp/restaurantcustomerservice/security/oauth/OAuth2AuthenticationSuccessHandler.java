@@ -5,7 +5,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
@@ -25,10 +24,8 @@ import java.io.IOException;
 public class OAuth2AuthenticationSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
     private final ObjectMapper objectMapper;
     private final CustomerRepository customerRepository;
-    @Qualifier("OAuth2GithubPrinciple")
-    private final OAuth2UserPrinciple userGitHubPrinciple;
-    @Qualifier("OAuth2GooglePrinciple")
-    private final OAuth2UserPrinciple userGooglePrinciple;
+    private final OAuth2GithubPrinciple userGitHubPrinciple;
+    private final OAuth2GooglePrinciple userGooglePrinciple;
     private final JwtTokenProvider jwtTokenProvider;
 
     @Override
