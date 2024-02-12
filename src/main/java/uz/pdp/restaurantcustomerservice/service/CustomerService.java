@@ -4,10 +4,7 @@ import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import uz.pdp.restaurantcustomerservice.dto.CustomerDto;
-import uz.pdp.restaurantcustomerservice.dto.CustomerLoginDto;
-import uz.pdp.restaurantcustomerservice.dto.CustomerRegisterDto;
-import uz.pdp.restaurantcustomerservice.dto.JwtDto;
+import uz.pdp.restaurantcustomerservice.dto.*;
 import uz.pdp.restaurantcustomerservice.entity.Customer;
 import uz.pdp.restaurantcustomerservice.exception.AlreadyExistException;
 import uz.pdp.restaurantcustomerservice.exception.InvalidDataException;
@@ -18,6 +15,7 @@ import uz.pdp.restaurantcustomerservice.repository.CustomerRepository;
 import uz.pdp.restaurantcustomerservice.security.jwt.JwtTokenProvider;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -93,6 +91,34 @@ public class CustomerService {
         throw new InvalidDataException("Password");
     }
 
+
+    public CustomerDto update(CustomerUpdateDto customerUpdateDto) {
+        if (customerUpdateDto == null)
+            throw new NullOrEmptyException("CustomerUpdate");
+        if (customerUpdateDto.getId() == null)
+            throw new NullOrEmptyException("Id");
+        if (customerUpdateDto.getUsername() != null && customerRepository.findByUsername(customerUpdateDto.getUsername()).isPresent())
+            throw new AlreadyExistException("Username");
+        if (customerUpdateDto.getEmail() != null && customerRepository.findByEmail(customerUpdateDto.getEmail()).isPresent())
+            throw new AlreadyExistException("Email");
+        if (customerUpdateDto.getPhoneNumber() != null && customerRepository.findByPhoneNumber(customerUpdateDto.getPhoneNumber()).isPresent())
+            throw new AlreadyExistException("Phone number");
+
+        Customer customer = customerRepository.findById(customerUpdateDto.getId()).orElseThrow(
+                () -> new NotFoundException("Customer")
+        );
+
+        if (customerUpdateDto.getEmail() != null)
+            emailService.sendEmailVerificationMessage(customerUpdateDto.getUsername(), customerUpdateDto.getEmail());
+        return new CustomerDto(customerRepository.save(Customer.builder()
+                .firstName(Objects.requireNonNullElse(customerUpdateDto.getFirstName(), customer.getFirstName()))
+                .lastName(Objects.requireNonNullElse(customerUpdateDto.getLastName(), customer.getLastName()))
+                .username(Objects.requireNonNullElse(customerUpdateDto.getUsername(), customer.getUsername()))
+                .email(Objects.requireNonNullElse(customerUpdateDto.getEmail(), customer.getEmail()))
+                .password(Objects.requireNonNullElse(customerUpdateDto.getPassword() == null ? customer.getPassword() : passwordEncoder.encode(customerUpdateDto.getPassword()), customer.getPassword()))
+                .phoneNumber(Objects.requireNonNullElse(customerUpdateDto.getPhoneNumber(), customer.getPhoneNumber()))
+                .build()));
+    }
 
     public CustomerDto getById(Long id) {
         if (id == null) {
