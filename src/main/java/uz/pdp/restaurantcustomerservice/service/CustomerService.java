@@ -13,6 +13,7 @@ import uz.pdp.restaurantcustomerservice.exception.AlreadyExistException;
 import uz.pdp.restaurantcustomerservice.exception.InvalidDataException;
 import uz.pdp.restaurantcustomerservice.exception.NotFoundException;
 import uz.pdp.restaurantcustomerservice.exception.NullOrEmptyException;
+import uz.pdp.restaurantcustomerservice.exception.OAuth2Exception;
 import uz.pdp.restaurantcustomerservice.repository.CustomerRepository;
 import uz.pdp.restaurantcustomerservice.security.jwt.JwtTokenProvider;
 
@@ -72,13 +73,19 @@ public class CustomerService {
             customer = customerRepository.findByUsername(customerLoginDto.getUsername()).orElseThrow(
                     () -> new NotFoundException("Customer")
             );
+            if (customer.getProviderRegisterClientId() != null)
+                throw new OAuth2Exception();
         } else if (customerLoginDto.getUsername() == null && customerLoginDto.getEmail() != null) {
             customer = customerRepository.findByEmail(customerLoginDto.getEmail()).orElseThrow(
                     () -> new NotFoundException("Customer")
             );
+            if (customer.getProviderRegisterClientId() != null)
+                throw new OAuth2Exception();
         } else {
             customer = customerRepository.findByUsername(customerLoginDto.getUsername()).orElseThrow(
                     () -> new NotFoundException("Customer"));
+            if (customer.getProviderRegisterClientId() != null)
+                throw new OAuth2Exception();
         }
         if (passwordEncoder.matches(customerLoginDto.getPassword(), customer.getPassword())) {
             return new JwtDto(jwtTokenProvider.generateToken(customer));
