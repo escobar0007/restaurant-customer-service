@@ -24,6 +24,7 @@ public class JwtTokenProvider {
                 .subject(customer.getUsername())
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + Long.parseLong(expiry)))
+                .claim("permissions", customer.getPermissions())
                 .signWith(key())
                 .compact();
     }

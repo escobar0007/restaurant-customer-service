@@ -16,7 +16,6 @@ import uz.pdp.restaurantcustomerservice.entity.Customer;
 import uz.pdp.restaurantcustomerservice.repository.CustomerRepository;
 
 import java.io.IOException;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,7 +40,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                 Claims claims = jwtTokenProvider.parseAllClaims(token);
                 Optional<Customer> customer = customerRepository.findByUsername(claims.getSubject());
                 if (customer.isPresent()) {
-                    List<SimpleGrantedAuthority> grantedAuthority = Collections.singletonList(new SimpleGrantedAuthority(List.of(customer.get().getEmail(), customer.get().getPhoneNumber()).toString()));
+                    List<SimpleGrantedAuthority> grantedAuthority = customer.get().getPermissions().stream().map(r -> new SimpleGrantedAuthority(r.getValue())).toList();
                     SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(
                             claims.getSubject(),
                             null,

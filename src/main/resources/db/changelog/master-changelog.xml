@@ -17,5 +17,13 @@
             <column name="password" type="varchar"/>
             <column name="card_number" type="varchar"/>
         </createTable>
+        <createTable tableName="permission">
+            <column name="id" type="bigserial"/>
+            <column name="value" type="varchar"/>
+        </createTable>
+        <createTable tableName="customers_permissions">
+            <column name="customer_id" type="bigint"/>
+            <column name="permissions_id" type="bigint"/>
+        </createTable>
     </changeSet>
 </databaseChangeLog>

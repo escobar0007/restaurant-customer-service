@@ -1,17 +1,14 @@
 package uz.pdp.restaurantcustomerservice.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -43,10 +40,12 @@ public class Customer {
     @Pattern(regexp = "^\\+998\\d{2}\\d{3}\\d{2}\\d{2}$", message = "Invalid phone number")
     private String phoneNumber;
 
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*])[A-Za-z\\d!@#$%^&*]{8,}$", message = "Invalid password")
+//    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*])[A-Za-z\\d!@#$%^&*]{8,}$", message = "Invalid password")
     private String password;
 
     @Column(unique = true)
     private String cardNumber;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<Permission> permissions;
 }

@@ -6,12 +6,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import uz.pdp.restaurantcustomerservice.dto.*;
 import uz.pdp.restaurantcustomerservice.entity.Customer;
+import uz.pdp.restaurantcustomerservice.entity.Permission;
 import uz.pdp.restaurantcustomerservice.exception.AlreadyExistException;
 import uz.pdp.restaurantcustomerservice.exception.InvalidDataException;
 import uz.pdp.restaurantcustomerservice.exception.NotFoundException;
 import uz.pdp.restaurantcustomerservice.exception.NullOrEmptyException;
 import uz.pdp.restaurantcustomerservice.exception.OAuth2Exception;
 import uz.pdp.restaurantcustomerservice.repository.CustomerRepository;
+import uz.pdp.restaurantcustomerservice.repository.PermissionRepository;
 import uz.pdp.restaurantcustomerservice.security.jwt.JwtTokenProvider;
 
 import java.util.List;
@@ -24,6 +26,7 @@ public class CustomerService {
     private final PasswordEncoder passwordEncoder;
     private final EmailService emailService;
     private final JwtTokenProvider jwtTokenProvider;
+    private final PermissionRepository permissionRepository;
     public String register(CustomerRegisterDto customerRegisterDto) {
         if (customerRegisterDto == null)
             throw new NullOrEmptyException("UserRegisterDto");
@@ -58,6 +61,7 @@ public class CustomerService {
                 .phoneNumber(customerRegisterDto.getPhoneNumber())
                 .password(passwordEncoder.encode(customerRegisterDto.getPassword()))
                 .cardNumber(null)
+                .permissions(List.of(permissionRepository.findByValue("PER_CUSTOMER").get()))
                 .build();
 
         customerRepository.save(customer);
