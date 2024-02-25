@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import uz.pdp.restaurantcustomerservice.entity.Customer;
+import uz.pdp.restaurantcustomerservice.entity.User;
 
 import java.io.Serializable;
 import java.util.List;
@@ -17,7 +17,8 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CustomerDto {
+public class UserDto {
+    Long id;
     String firstName;
     String lastName;
     String username;
@@ -25,13 +26,14 @@ public class CustomerDto {
     String phoneNumber;
     List<NestedPermissionDto> permissions;
 
-    public CustomerDto(Customer customer) {
-        this.firstName = customer.getFirstName();
-        this.lastName = customer.getLastName();
-        this.username = customer.getUsername();
-        this.email = customer.getEmail();
-        this.phoneNumber = customer.getPhoneNumber();
-        this.permissions = customer.getPermissions().stream()
+    public UserDto(User user) {
+        this.id = user.getId();
+        this.firstName = user.getFirstName();
+        this.lastName = user.getLastName();
+        this.username = user.getUsername();
+        this.email = user.getEmail();
+        this.phoneNumber = user.getPhoneNumber();
+        this.permissions = user.getPermissions().stream()
                 .map(permission -> new NestedPermissionDto(permission.getValue()))
                 .collect(Collectors.toList());
     }

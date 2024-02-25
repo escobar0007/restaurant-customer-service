@@ -8,27 +8,27 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import uz.pdp.restaurantcustomerservice.dto.CustomerUpdateDto;
-import uz.pdp.restaurantcustomerservice.service.CustomerService;
+import uz.pdp.restaurantcustomerservice.dto.UserUpdateDto;
+import uz.pdp.restaurantcustomerservice.service.UserService;
 
 @RestController
-@RequestMapping("/api/v1/customers")
+@RequestMapping("/api/v1/users")
 @RequiredArgsConstructor
 public class CustomerController {
-    private final CustomerService customerService;
+    private final UserService userService;
 
     @GetMapping
     public ResponseEntity<?> getAllCustomers() {
-        return ResponseEntity.ok(customerService.getAll());
+        return ResponseEntity.ok(userService.getAll());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable Long id) {
-        return ResponseEntity.ok(customerService.getById(id));
+        return ResponseEntity.ok(userService.getById(id));
     }
 
     @PostMapping("/update")
-    public ResponseEntity<?> update(@RequestBody CustomerUpdateDto customerUpdateDto) {
-        return ResponseEntity.ok(customerService.update(customerUpdateDto));
+    public ResponseEntity<?> update(@RequestBody UserUpdateDto userUpdateDto) {
+        return ResponseEntity.ok(userService.update(userUpdateDto));
     }
 }

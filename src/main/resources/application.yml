@@ -29,7 +29,7 @@ spring:
     change-log: classpath:/db/changelog/master-changelog.xml
 
   application:
-    name: res-customer-service
+    name: res-authentication-service
 
   jpa:
     hibernate:

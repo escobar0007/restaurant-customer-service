@@ -6,7 +6,7 @@ import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import uz.pdp.restaurantcustomerservice.entity.Customer;
+import uz.pdp.restaurantcustomerservice.entity.User;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
@@ -19,20 +19,20 @@ public class JwtTokenProvider {
     private String key;
     @Value("${jwt.token.secret.expiry}")
     private String expiry;
-    public String generateToken(Customer customer){
+    public String generateToken(User user){
         return Jwts.builder()
-                .subject(customer.getUsername())
+                .subject(user.getUsername())
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + Long.parseLong(expiry)))
-                .claim("permissions", customer.getPermissions())
+                .claim("permissions", user.getPermissions())
                 .signWith(key())
                 .compact();
     }
-    public String generateForEmail(Customer customer){
+    public String generateForEmail(User user){
         return Jwts.builder()
-                .subject(customer.getEmail())
+                .subject(user.getEmail())
                 .issuedAt(new Date())
-                .claim("username",customer.getUsername())
+                .claim("username", user.getUsername())
                 .expiration(new Date(System.currentTimeMillis() + 600000))
                 .signWith(key())
                 .compact();

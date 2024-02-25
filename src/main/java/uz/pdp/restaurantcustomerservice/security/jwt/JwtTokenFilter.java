@@ -12,8 +12,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import uz.pdp.restaurantcustomerservice.entity.Customer;
-import uz.pdp.restaurantcustomerservice.repository.CustomerRepository;
+import uz.pdp.restaurantcustomerservice.entity.User;
+import uz.pdp.restaurantcustomerservice.repository.UserRepository;
 
 import java.io.IOException;
 import java.util.List;
@@ -28,7 +28,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     private static final String BEARER = "Bearer ";
 
     private final JwtTokenProvider jwtTokenProvider;
-    private final CustomerRepository customerRepository;
+    private final UserRepository userRepository;
 
 
     @Override
@@ -38,7 +38,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             token = token.split(" ")[1];
             if (jwtTokenProvider.isValid(token)) {
                 Claims claims = jwtTokenProvider.parseAllClaims(token);
-                Optional<Customer> customer = customerRepository.findByUsername(claims.getSubject());
+                Optional<User> customer = userRepository.findByUsername(claims.getSubject());
                 if (customer.isPresent()) {
                     List<SimpleGrantedAuthority> grantedAuthority = customer.get().getPermissions().stream().map(r -> new SimpleGrantedAuthority(r.getValue())).toList();
                     SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(

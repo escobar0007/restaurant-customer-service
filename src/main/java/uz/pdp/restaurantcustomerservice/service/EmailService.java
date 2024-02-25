@@ -9,7 +9,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
-import uz.pdp.restaurantcustomerservice.entity.Customer;
+import uz.pdp.restaurantcustomerservice.entity.User;
 import uz.pdp.restaurantcustomerservice.security.jwt.JwtTokenProvider;
 
 import java.util.Map;
@@ -35,7 +35,7 @@ public class EmailService {
         String html = FreeMarkerTemplateUtils.processTemplateIntoString(
                 template,
                 Map.of("link", verificationUrl + jwtTokenProvider.generateForEmail(
-                        Customer.builder()
+                        User.builder()
                                 .username(username)
                                 .email(email)
                                 .build()
