@@ -10,27 +10,27 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import uz.pdp.restaurantcustomerservice.dto.UserLoginDto;
 import uz.pdp.restaurantcustomerservice.dto.UserRegisterDto;
-import uz.pdp.restaurantcustomerservice.service.UserService;
+import uz.pdp.restaurantcustomerservice.service.impl.UserServiceImpl;
 
 @RestController
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
 public class AuthenticationController {
-    private final UserService userService;
+    private final UserServiceImpl userServiceImpl;
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody UserRegisterDto userRegisterDto) {
-        return ResponseEntity.ok(userService.register(userRegisterDto));
+        return ResponseEntity.ok(userServiceImpl.register(userRegisterDto));
     }
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody UserLoginDto userLoginDto) {
-        return ResponseEntity.ok(userService.login(userLoginDto));
+        return ResponseEntity.ok(userServiceImpl.login(userLoginDto));
     }
 
     @GetMapping("/verify")
     public ResponseEntity<?> verify(@RequestParam String token) {
-        if (userService.verify(token))
+        if (userServiceImpl.verify(token))
             return ResponseEntity.ok("Successfully verified");
         return ResponseEntity.badRequest().body("Error");
     }

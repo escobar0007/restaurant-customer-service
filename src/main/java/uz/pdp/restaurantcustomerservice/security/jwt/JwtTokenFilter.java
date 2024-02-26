@@ -30,7 +30,6 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     private final JwtTokenProvider jwtTokenProvider;
     private final UserRepository userRepository;
 
-
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String token = request.getHeader(AUTHORIZATION);
@@ -38,9 +37,9 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             token = token.split(" ")[1];
             if (jwtTokenProvider.isValid(token)) {
                 Claims claims = jwtTokenProvider.parseAllClaims(token);
-                Optional<User> customer = userRepository.findByUsername(claims.getSubject());
-                if (customer.isPresent()) {
-                    List<SimpleGrantedAuthority> grantedAuthority = customer.get().getPermissions().stream().map(r -> new SimpleGrantedAuthority(r.getValue())).toList();
+                Optional<User> user = userRepository.findByUsername(claims.getSubject());
+                if (user.isPresent()) {
+                    List<SimpleGrantedAuthority> grantedAuthority = user.get().getPermissions().stream().map(r -> new SimpleGrantedAuthority(r.getValue())).toList();
                     SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(
                             claims.getSubject(),
                             null,

@@ -32,10 +32,10 @@ public class SecurityConfiguration {
                 registry.requestMatchers("/api/v1/auth/**", "/login/oauth2/**", "/verify","/swagger-ui/**", "/v3/api-docs/**").permitAll()
                         .anyRequest().authenticated()
         )
-                .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
-                .oauth2Login(oauth ->
-                        oauth.successHandler(successHandler)
-                        );
+                .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
+//                .oauth2Login(oauth ->
+//                        oauth.successHandler(successHandler)
+//                        );
         return http.build();
     }
 }
